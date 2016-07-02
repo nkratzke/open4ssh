@@ -108,7 +108,7 @@ So, for each command a list of return values is returned.
 1. exit code of the executed command
 2. standard out message (might be empty)
 3. standard error message (might be empty)
-4. executed command (as passed by the _cmd_ parameter in _exec4_ call.
+4. executed command (as passed by the _cmd_ parameter)
 
 However, if we launch a sequence of commands exiting with exit codes not equal 0, this sequence is only executed as long as 
 each command could be successfully processed (exit code 0). So this snippet here

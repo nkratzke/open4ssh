@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ### Remote execution of a single command via SSH
 
-All parameters of the _exec_ command are explained [here](Open4ssh.html#exec-class_method).
+All parameters of the _capture_ command are explained [here](Open4ssh.html#capture-class_method).
 
 However, the following snippets explain how to use Open4ssh. 
 To execute simply one single command on a remote host, we can do the following:
@@ -43,7 +43,7 @@ To execute simply one single command on a remote host, we can do the following:
 ```ruby
 require 'open4ssh'
 
-stdout = Open4ssh.exec(
+stdout = Open4ssh.capture(
      host: 'remote.host.io',
      user: 'nane',
      pwd: 'secret',
@@ -60,7 +60,7 @@ For a lot of cloud scenarios it is more appropriate to support a keybased login.
 ```ruby
 require 'open4ssh'
 
-stdout = Open4ssh.exec(
+stdout = Open4ssh.capture(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -71,7 +71,7 @@ puts stdout
 
 ### Remote execution of a sequence of commands via SSH
 
-All parameters of the _exec4_ command are explained [here](Open4ssh.html#exec4-class_method).
+All parameters of the _capture4_ command are explained [here](Open4ssh.html#capture4-class_method).
 The following snippets will explain how to use Open4ssh to execute a (sequence) of commands.
 
 This snippet here will execute five shell commands sequentially
@@ -80,7 +80,7 @@ This snippet here will execute five shell commands sequentially
 require 'open4ssh'
 require 'pp'
 
-returns = Open4ssh.exec4(
+returns = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -117,7 +117,7 @@ each command could be successfully processed (exit code 0). So this snippet here
 require 'open4ssh'
 require 'pp'
 
-returns = Open4ssh.exec4(
+returns = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -146,7 +146,7 @@ Because Open4ssh only executes commands as long as they are returning a exit cod
 pragmatically whether all commands of a sequence have been executed successfully:
 
 ```ruby
-exit_code, stderr, stdout, command = Open4ssh.exec4(
+exit_code, stderr, stdout, command = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -169,7 +169,7 @@ end
 Just a small example. Assuming your remote host is a Ubuntu 14.04 system we could do something like that:
 
 ```ruby
-exit_code, stdout, stderr, command = Open4ssh.exec4(
+exit_code, stdout, stderr, command = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -193,7 +193,7 @@ Of course, you can do any other tasks as well. This was only one example ;-)
 If you want to know what is happening there you can turn on the verbose mode (mostly useful for debugging).
 
 ```ruby
-exit_code, stdout, stderr, command = Open4ssh.exec4(
+exit_code, stdout, stderr, command = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',

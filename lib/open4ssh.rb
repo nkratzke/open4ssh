@@ -3,7 +3,7 @@ require "net/ssh"
 
 module Open4ssh
 
-  # Executes a shell command on a remote host via SSH and returns the console output.
+  # Executes a shell command on a remote host via SSH and captures the console output.
   #
   # @param host [String] DNS name or IP address of the remote host (required)
   # @param port [Integer] Port (defaults to 22)
@@ -14,7 +14,16 @@ module Open4ssh
   #
   # @return [String] console output of executed command (output includes stdout and stderr)
   #
-  def self.exec(host: '', user: '', port: 22, key: '', pwd: '', cmd: '')
+  # @example
+  #   stdout = Open4ssh.capture(
+  #       host: 'remote.host.io',
+  #       user: 'nane',
+  #       pwd: 'secret',
+  #       cmd: 'ls -la'
+  #   )
+  #   puts stdout
+  #
+  def self.capture(host: '', user: '', port: 22, key: '', pwd: '', cmd: '')
     stdout = ""
     keys = [key]
 
@@ -26,7 +35,7 @@ module Open4ssh
     return stdout
   end
 
-  # Executes a list of shell commands on a remote host via SSH and returns their exit codes, stdouts and stderrs.
+  # Executes a list of shell commands on a remote host via SSH and captures their exit codes, stdouts and stderrs.
   # The commands are executed sequentially until a command terminates with an exit code not equal 0 (no success).
   #
   # @param host [String] DNS name or IP address of the remote host (required)
@@ -39,7 +48,20 @@ module Open4ssh
   #
   # @return [Array<exit_code, stdout, stderr, command>] List of exit_code, stdout, stderr and executed commands
   #
-  def self.exec4(host: '', user: '', port: 22, key: '', pwd: '', cmd: [], verbose: false)
+  # @example
+  #   exit_code, stderr, stdout, command = Open4ssh.capture4(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     key: '/path/to/your/sshkey.pem',
+  #     cmd: [
+  #     "touch helloworld.txt",
+  #     "cat helloworld.txt",
+  #     "echo 'Hello World' >> helloworld.txt",
+  #     "cat helloworld.txt",
+  #     "rm helloworld.txt"
+  #   ]).last
+  #
+  def self.capture4(host: '', user: '', port: 22, key: '', pwd: '', cmd: [], verbose: false)
     keys    = [key]
     results = []
 

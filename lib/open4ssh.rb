@@ -1,6 +1,30 @@
 require "open4ssh/version"
 require "net/ssh"
 
+# Open4ssh is a small convenience wrapper for {https://rubygems.org/gems/net-ssh net-ssh}.
+# Its intended and primary purpose is to provide pragmatic
+# execution of shell commands on a remote host via SSH.
+#
+# It provides the following functions:
+#
+# - {capture} to execute one command on a remote host via SSH and get the console output back.
+# - {capture3} to execute one command on a remote host via SSH and get the exit code, standard out, standard error of the command back.
+# - {capture4} to execute a sequence of commands on a remote host via SSH and get all return values (exit code, standard out, standard error, command) back.
+# - {success} to evaluate whether a sequence of commands was successful.
+# - {stdout} to get all standard out messages of a sequence of commands.
+# - {stderr} to get all standard error messages of a sequence of commands.
+# - {console} to get all console output (union of standard out and standard error messages) of a sequence of commands.
+#
+# @author Nane Kratzke
+# @example
+#   console = Open4ssh.capture(
+#       host: 'remote.host.io',
+#       user: 'nane',
+#       pwd: 'secret',
+#       cmd: 'ls -la'
+#   )
+#   puts console
+#
 module Open4ssh
 
   # Executes a shell command on a remote host via SSH and captures the console output.
@@ -33,6 +57,34 @@ module Open4ssh
     end
 
     return stdout
+  end
+
+  # Executes one shell commands on a remote host via SSH and captures it exit code, stdout and stderr.
+  #
+  # @param host [String] DNS name or IP address of the remote host (required)
+  # @param port [Integer] Port (defaults to 22)
+  # @param user [String] User name (required)
+  # @param key [Path] Path to a key file (.pem) if user logs in via keyfile (not required if password is provided)
+  # @param pwd [String] Password of user (not required if key is provided)
+  # @param cmd [String] shell command string to be executed on host (required)
+  # @param verbose [Bool] console outputs are plotted to stdout/stderr if set (defaults to false)
+  #
+  # @return [exit_code, std_out, std_err] exit_code, stdout, stderr of executed command
+  #
+  # @example
+  #   exit_code, std_err, std_out = Open4ssh.capture3(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     pwd: 'secret',
+  #     cmd: 'ls -la'
+  #   )
+  #
+  def self.capture3(host: '', user: '', port: 22, key: '', pwd: '', cmd: '', verbose: false)
+    returns = self.capture4(host: host, user: user, port: port, key: key, cmd: [cmd], verbose: verbose)
+    exit_code = returns.last[0]
+    std_out = returns.last[1]
+    std_err = returns.last[2]
+    return exit_code, std_out, std_err
   end
 
   # Executes a list of shell commands on a remote host via SSH and captures their exit codes, stdouts and stderrs.

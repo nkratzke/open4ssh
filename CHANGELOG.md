@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.3
+
+- Added <code>capture3()</code> function.
+- Optimized documentation. 
+
 ## Version 0.1.2
 
 - Added <code>success(), stdout(), stderr(), console()</code> functions.

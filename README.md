@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ### Remote execution of a single command via SSH
 
-All parameters of the <code>capture()</code> command are explained [here](Open4ssh.html#capture-class_method).
+All parameters of the <code>capture()</code> command are explained [here](doc/Open4ssh.html#capture-class_method).
 
 However, the following snippets explain how to use Open4ssh. 
 To execute simply one single command on a remote host, we can do the following:
@@ -71,7 +71,7 @@ puts stdout
 
 ### Remote execution of a sequence of commands via SSH
 
-All parameters of the <code>capture4()</code> function are explained [here](Open4ssh.html#capture4-class_method).
+All parameters of the <code>capture4()</code> function are explained [here](doc/Open4ssh.html#capture4-class_method).
 The following snippets will explain how to use Open4ssh to execute a (sequence) of commands.
 
 This snippet here will execute five shell commands sequentially

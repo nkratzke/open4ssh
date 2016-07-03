@@ -46,7 +46,7 @@ module Open4ssh
   # @param cmd [Array<String>] List of valid shell command strings to be executed on host (required)
   # @param verbose [Bool] console outputs are plotted to stdout/stderr if set (defaults to false)
   #
-  # @return [Array<exit_code, stdout, stderr, command>] List of exit_code, stdout, stderr and executed commands
+  # @return [Array<exit_code, std_out, std_err, command>] List of exit_code, stdout, stderr and executed commands
   #
   # @example
   #   exit_code, stderr, stdout, command = Open4ssh.capture4(
@@ -101,4 +101,122 @@ module Open4ssh
 
     return results
   end
+
+  # Determines whether a list of shell commands has been executed successfully.
+  #
+  # @param results [Array<exit_code, std_out, std_err, command>] List of returns by executed commands as returned by capture4
+  #
+  # @return [Bool] true, if all exit codes are 0;
+  # @return [Bool] false, otherwise
+  #
+  # @example
+  #   ecodes = Open4ssh.capture4(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     key: '/path/to/your/sshkey.pem',
+  #     cmd: [
+  #       "touch helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "echo 'Hello World' >> helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "rm helloworld.txt"
+  #   ])
+  #
+  #   if Open4ssh.success(ecodes)
+  #      puts "Success:"
+  #      puts Open4ssh.console(ecodes) # Print collected console outputs of all executed commands
+  #   end
+  #
+  def self.success(results)
+    results.select { |result| result[0] != 0 }
+        .empty?
+  end
+
+  # Collects all stdout messages of a list of executed shell commands.
+  #
+  # @param results [Array<exit_code, std_out, std_err, command>] List of returns by executed commands as returned by capture4
+  #
+  # @return [String] All stdout messages (separated by line feed \n)
+  #
+  # @example
+  #   ecodes = Open4ssh.capture4(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     key: '/path/to/your/sshkey.pem',
+  #     cmd: [
+  #       "touch helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "echo 'Hello World' >> helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "rm helloworld.txt"
+  #   ])
+  #
+  #   if Open4ssh.success(ecodes)
+  #      puts "Success:"
+  #      puts Open4ssh.stdout(ecodes) # Print collected stdout messages of all executed commands
+  #   end
+  #
+  def self.stdout(results)
+    output = results.map { |result| result[1] }
+                 .select {  |stdout| not stdout.strip.empty? } * "\n"
+    output.strip
+  end
+
+  # Collects all stderr messages of a list of executed shell commands.
+  #
+  # @param results [Array<exit_code, std_out, std_err, command>] List of returns by executed commands as returned by capture4
+  #
+  # @return [String] All stderr messages (separated by line feed \n)
+  #
+  # @example
+  #   ecodes = Open4ssh.capture4(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     key: '/path/to/your/sshkey.pem',
+  #     cmd: [
+  #       "touch helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "this will fail",
+  #       "cat helloworld.txt",
+  #       "rm helloworld.txt"
+  #   ])
+  #
+  #   unless Open4ssh.success(ecodes)
+  #      puts "Failure:"
+  #      puts Open4ssh.stderr(ecodes) # Print collected stderr messages of all executed commands
+  #   end
+  #
+  def self.stderr(results)
+    output = results.map { |result| result[2] }
+                 .select { |stderr| not stderr.strip.empty? } * "\n"
+    output.strip
+  end
+
+  # Collects all console messages (stdout + stderr) of a list of executed shell commands.
+  #
+  # @param results [Array<exit_code, std_out, std_err, command>] List of returns by executed commands as returned by capture4
+  #
+  # @return [String] All console messages (separated by line feed \n)
+  #
+  # @example
+  #   ecodes = Open4ssh.capture4(
+  #     host: 'remote.host.io',
+  #     user: 'nane',
+  #     key: '/path/to/your/sshkey.pem',
+  #     cmd: [
+  #       "touch helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "echo 'Hello World' >> helloworld.txt",
+  #       "cat helloworld.txt",
+  #       "rm helloworld.txt"
+  #   ])
+  #
+  #   puts Open4ssh.console(ecodes) # Print collected console messages of all executed commands
+  #
+  def self.console(results)
+    output = results.map { |result| "#{result[1]}\n#{result[2]}" }
+                 .select { |console| not console.strip.empty? } * "\n"
+    output.strip
+  end
+
 end

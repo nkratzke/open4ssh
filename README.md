@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ### Remote execution of a single command via SSH
 
-All parameters of the _capture_ command are explained [here](Open4ssh.html#capture-class_method).
+All parameters of the <code>capture()</code> command are explained [here](Open4ssh.html#capture-class_method).
 
 However, the following snippets explain how to use Open4ssh. 
 To execute simply one single command on a remote host, we can do the following:
@@ -71,7 +71,7 @@ puts stdout
 
 ### Remote execution of a sequence of commands via SSH
 
-All parameters of the _capture4_ command are explained [here](Open4ssh.html#capture4-class_method).
+All parameters of the <code>capture4()</code> function are explained [here](Open4ssh.html#capture4-class_method).
 The following snippets will explain how to use Open4ssh to execute a (sequence) of commands.
 
 This snippet here will execute five shell commands sequentially
@@ -146,7 +146,7 @@ Because Open4ssh only executes commands as long as they are returning a exit cod
 pragmatically whether all commands of a sequence have been executed successfully:
 
 ```ruby
-exit_code, stderr, stdout, command = Open4ssh.capture4(
+returns = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -157,9 +157,9 @@ exit_code, stderr, stdout, command = Open4ssh.capture4(
        "cat helloworld.txt",
        "rm helloworld.txt"
      ]
-).last
+)
 
-if (exit_code == 0 && command == "rm helloworld.txt")
+if Open4ssh.success(returns)
     puts "Everything worked fine"
 end
 ```
@@ -169,7 +169,7 @@ end
 Just a small example. Assuming your remote host is a Ubuntu 14.04 system we could do something like that:
 
 ```ruby
-exit_code, stdout, stderr, command = Open4ssh.capture4(
+returns = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -177,9 +177,9 @@ exit_code, stdout, stderr, command = Open4ssh.capture4(
        "curl -fsSL https://test.docker.com/ | sh",
        "sudo docker swarm init"
      ]
-).last
+)
 
-if (command == "sudo docker swarm init" && exit_code == 0)
+if Open4ssh.success(returns)
     puts "You started successfully a new Docker Swarm cluster."
 end
 ```
@@ -193,7 +193,7 @@ Of course, you can do any other tasks as well. This was only one example ;-)
 If you want to know what is happening there you can turn on the verbose mode (mostly useful for debugging).
 
 ```ruby
-exit_code, stdout, stderr, command = Open4ssh.capture4(
+returns = Open4ssh.capture4(
      host: 'remote.host.io',
      user: 'nane',
      key: '/path/to/your/sshkey.pem',
@@ -202,14 +202,32 @@ exit_code, stdout, stderr, command = Open4ssh.capture4(
        "sudo docker swarm init"
      ],
      verbose: true
-).last
+)
 
-if (command == "sudo docker swarm init" && exit_code == 0)
+if Open4ssh.success(returns)
     puts "You started successfully a new Docker Swarm cluster."
 end
 ```
 
 This will perform the same install like above but will print all messages of the Docker install script on your console.
+
+### Printing stdout and stderr outputs
+
+It is possible to print all standard output and error messages of
+sequentially executed commands by calling <code>stdout()</code>, <code>stderr()</code> or <code>console()</code>
+with the return of a <code>capture4()</code> call.
+
+```ruby
+# This will print all standard output messages of all executed commands.
+puts Open4ssh.stdout(returns)
+
+# This will print all standard error messages of all executed commands.
+puts Open4ssh.stderr(returns)
+
+# This will print all console output messages of all executed commands 
+# (which includes standard out and standard err messages).
+puts Open4ssh.console(returns) 
+```
 
 ## Development
 
@@ -221,8 +239,13 @@ push git commits and tags, and push the `.gem` file to [rubygems.org](https://ru
 
 ## Contributing
 
-Bug reports and pull requests are welcome on Github at https://github.com/nkratzke/open4ssh.
+All kind of 
 
+- bug reports,
+- feature requests, 
+- and pull requests 
+
+are welcome on Github at https://github.com/nkratzke/open4ssh.
 
 ## License
 

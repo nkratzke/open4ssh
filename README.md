@@ -15,6 +15,9 @@ sequence of commands and returns their exit codes, standard out and standard err
 
 Open4ssh is most useful in remote automation scenarios which are triggered from Ruby environments.
 
+- [CHANGELOG](file.CHANGELOG.html)
+- [LICENSE](file.LICENSE.html)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -33,9 +36,9 @@ Or install it yourself as:
 
 ## Usage
 
-### Remote execution of a single command via SSH
+### Remote execution of a single command via SSH using <code>capture()</code>
 
-All parameters of the <code>capture()</code> command are explained [here](doc/Open4ssh.html#capture-class_method).
+All parameters of the <code>capture()</code> command are explained [here](Open4ssh.html#capture-class_method).
 
 However, the following snippets explain how to use Open4ssh. 
 To execute simply one single command on a remote host, we can do the following:
@@ -69,9 +72,9 @@ stdout = Open4ssh.capture(
 puts stdout
 ```
 
-### Remote execution of a sequence of commands via SSH
+### Remote execution of a sequence of commands via SSH using <code>capture4()</code>
 
-All parameters of the <code>capture4()</code> function are explained [here](doc/Open4ssh.html#capture4-class_method).
+All parameters of the <code>capture4()</code> function are explained [here](Open4ssh.html#capture4-class_method).
 The following snippets will explain how to use Open4ssh to execute a (sequence) of commands.
 
 This snippet here will execute five shell commands sequentially
@@ -140,7 +143,7 @@ would produce the following output
      
 and the last two commands would not been executed on the remote host, because the third command failed.
 
-### How to check whether a sequence of commands was successful?
+### How to check whether a sequence of commands was successful? Use <code>success()</code>
 
 Because Open4ssh only executes commands as long as they are returning a exit code of 0, we can check 
 pragmatically whether all commands of a sequence have been executed successfully:
@@ -162,6 +165,47 @@ returns = Open4ssh.capture4(
 if Open4ssh.success(returns)
     puts "Everything worked fine"
 end
+```
+
+### Verbose mode
+
+If you want to know what is happening there you can turn on the verbose mode (mostly useful for debugging).
+
+```ruby
+returns = Open4ssh.capture4(
+     host: 'remote.host.io',
+     user: 'nane',
+     key: '/path/to/your/sshkey.pem',
+     cmd: [
+       "curl -fsSL https://test.docker.com/ | sh",
+       "sudo docker swarm init"
+     ],
+     verbose: true
+)
+
+if Open4ssh.success(returns)
+    puts "You started successfully a new Docker Swarm cluster."
+end
+```
+
+This will perform the same install like above but will print all messages of the Docker install script on your console.
+
+### How to get stdout and stderr outputs? Use <code>stdout(), stderr(), console()</code>
+
+It is possible to print all standard output and error messages of
+sequentially executed commands by calling <code>stdout()</code>, <code>stderr()</code> or <code>console()</code>
+with the return of a <code>capture4()</code> call.
+
+```ruby
+# This will print all standard output messages of all executed commands.
+puts Open4ssh.stdout(returns)
+
+# This will print all standard error messages of all executed commands.
+puts Open4ssh.stderr(returns)
+
+# This will print all console output messages of all executed commands 
+# (which includes standard out and standard err messages).
+puts Open4ssh.console(returns) 
 ```
 
 ### What is this good for?
@@ -187,47 +231,6 @@ end
 This would fire up an initial master for a [Docker Swarm cluster](https://docs.docker.com/engine/swarm/) 
 in a few lines of Ruby code. Be patient. This can take several minutes. 
 Of course, you can do any other tasks as well. This was only one example ;-)
-
-### Verbose mode
-
-If you want to know what is happening there you can turn on the verbose mode (mostly useful for debugging).
-
-```ruby
-returns = Open4ssh.capture4(
-     host: 'remote.host.io',
-     user: 'nane',
-     key: '/path/to/your/sshkey.pem',
-     cmd: [
-       "curl -fsSL https://test.docker.com/ | sh",
-       "sudo docker swarm init"
-     ],
-     verbose: true
-)
-
-if Open4ssh.success(returns)
-    puts "You started successfully a new Docker Swarm cluster."
-end
-```
-
-This will perform the same install like above but will print all messages of the Docker install script on your console.
-
-### Printing stdout and stderr outputs
-
-It is possible to print all standard output and error messages of
-sequentially executed commands by calling <code>stdout()</code>, <code>stderr()</code> or <code>console()</code>
-with the return of a <code>capture4()</code> call.
-
-```ruby
-# This will print all standard output messages of all executed commands.
-puts Open4ssh.stdout(returns)
-
-# This will print all standard error messages of all executed commands.
-puts Open4ssh.stderr(returns)
-
-# This will print all console output messages of all executed commands 
-# (which includes standard out and standard err messages).
-puts Open4ssh.console(returns) 
-```
 
 ## Development
 

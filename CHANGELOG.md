@@ -1,5 +1,9 @@
 # Changelog
 
+## Upcoming Version 0.1.4
+
+- Added code coverage
+
 ## Version 0.1.3
 
 - Added unit tests.

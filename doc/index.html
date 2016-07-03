@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.README.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Open4ssh</h1>
+
+<p><a href="https://github.com/nkratzke/open4ssh">Open4ssh</a> is a small convenience wrapper for <a href="https://rubygems.org/gems/net-ssh">net-ssh</a>. 
+Its intended and primary purpose is to provide pragmatic
+execution of shell commands on a remote host via SSH.</p>
+
+<p>It is mainly inspired by <a href="http://ruby-doc.org/stdlib-2.3.1/libdoc/open3/rdoc/Open3.html">Open3</a> standard library 
+which provides access to exit codes, 
+standard output and standard error messages of executed commands on local host.
+Open4ssh does the same but in a SSH remote context. 
+Astonishingly, there seems no pragmatic way to figure out exit codes or standard error messages of executed commands 
+with the net-ssh library.
+Additionally, Open4ssh is able to execute a 
+sequence of commands and returns their exit codes, standard out and standard error messages in a command related list.</p>
+
+<p>Open4ssh is most useful in remote automation scenarios which are triggered from Ruby environments.</p>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application&#39;s Gemfile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>open4ssh</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre class="code ruby"><code class="ruby">$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre class="code ruby"><code class="ruby">$ gem install open4ssh
+</code></pre>
+
+<h2>Usage</h2>
+
+<h3>Remote execution of a single command via SSH</h3>
+
+<p>All parameters of the <code>capture()</code> command are explained <a href="Open4ssh.html#capture-class_method">here</a>.</p>
+
+<p>However, the following snippets explain how to use Open4ssh. 
+To execute simply one single command on a remote host, we can do the following:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>open4ssh</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_stdout'>stdout</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture'>capture</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>pwd:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>secret</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ls -la</span><span class='tstring_end'>&#39;</span></span>
+<span class='rparen'>)</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_stdout'>stdout</span>
+</code></pre>
+
+<p>This will execute the bash command &#39;ls -la&#39; on host <em>remote.host.io</em> as user <em>nane</em>.</p>
+
+<p>For a lot of cloud scenarios it is more appropriate to support a keybased login. This can be done like that 
+(simply use the key parameter instead of the pwd parameter):</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>open4ssh</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_stdout'>stdout</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture'>capture</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ls -la</span><span class='tstring_end'>&#39;</span></span>
+<span class='rparen'>)</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_stdout'>stdout</span>
+</code></pre>
+
+<h3>Remote execution of a sequence of commands via SSH</h3>
+
+<p>All parameters of the <code>capture4()</code> function are explained <a href="Open4ssh.html#capture4-class_method">here</a>.
+The following snippets will explain how to use Open4ssh to execute a (sequence) of commands.</p>
+
+<p>This snippet here will execute five shell commands sequentially</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>open4ssh</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>pp</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_returns'>returns</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture4'>capture4</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='lbracket'>[</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>touch helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>echo &#39;Hello World&#39; &gt;&gt; helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rm helloworld.txt</span><span class='tstring_end'>&quot;</span></span>
+     <span class='rbracket'>]</span>
+<span class='rparen'>)</span>
+<span class='id identifier rubyid_pp'>pp</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>and will generate this output.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>touch helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>echo &#39;Hello World&#39; &gt;&gt; helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello World\n</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rm helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+</code></pre>
+
+<p>So, for each command a list of return values is returned.</p>
+
+<ol>
+<li>exit code of the executed command</li>
+<li>standard out message (might be empty)</li>
+<li>standard error message (might be empty)</li>
+<li>executed command (as passed by the <em>cmd</em> parameter in <em>exec4</em> call.</li>
+</ol>
+
+<p>However, if we launch a sequence of commands exiting with exit codes not equal 0, this sequence is only executed as long as 
+each command could be successfully processed (exit code 0). So this snippet here</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>open4ssh</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>pp</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_returns'>returns</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture4'>capture4</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='lbracket'>[</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>touch helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>this will not work</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rm helloworld.txt</span><span class='tstring_end'>&quot;</span></span>
+     <span class='rbracket'>]</span>
+<span class='rparen'>)</span>
+<span class='id identifier rubyid_pp'>pp</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>would produce the following output</p>
+
+<pre class="code ruby"><code class="ruby"><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>touch helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+ <span class='lbracket'>[</span><span class='int'>127</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bash: this: command not found\n</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>this will not work</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+</code></pre>
+
+<p>and the last two commands would not been executed on the remote host, because the third command failed.</p>
+
+<h3>How to check whether a sequence of commands was successful?</h3>
+
+<p>Because Open4ssh only executes commands as long as they are returning a exit code of 0, we can check 
+pragmatically whether all commands of a sequence have been executed successfully:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_returns'>returns</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture4'>capture4</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='lbracket'>[</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>touch helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>echo &#39;Hello World&#39; &gt;&gt; helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat helloworld.txt</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>rm helloworld.txt</span><span class='tstring_end'>&quot;</span></span>
+     <span class='rbracket'>]</span>
+<span class='rparen'>)</span>
+
+<span class='kw'>if</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_success'>success</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Everything worked fine</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3>What is this good for?</h3>
+
+<p>Just a small example. Assuming your remote host is a Ubuntu 14.04 system we could do something like that:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_returns'>returns</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture4'>capture4</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='lbracket'>[</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>curl -fsSL https://test.docker.com/ | sh</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sudo docker swarm init</span><span class='tstring_end'>&quot;</span></span>
+     <span class='rbracket'>]</span>
+<span class='rparen'>)</span>
+
+<span class='kw'>if</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_success'>success</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>You started successfully a new Docker Swarm cluster.</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>This would fire up an initial master for a <a href="https://docs.docker.com/engine/swarm/">Docker Swarm cluster</a> 
+in a few lines of Ruby code. Be patient. This can take several minutes. 
+Of course, you can do any other tasks as well. This was only one example ;-)</p>
+
+<h3>Verbose mode</h3>
+
+<p>If you want to know what is happening there you can turn on the verbose mode (mostly useful for debugging).</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_returns'>returns</span> <span class='op'>=</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_capture4'>capture4</span><span class='lparen'>(</span>
+     <span class='label'>host:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>remote.host.io</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>user:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nane</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/path/to/your/sshkey.pem</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+     <span class='label'>cmd:</span> <span class='lbracket'>[</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>curl -fsSL https://test.docker.com/ | sh</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+       <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sudo docker swarm init</span><span class='tstring_end'>&quot;</span></span>
+     <span class='rbracket'>]</span><span class='comma'>,</span>
+     <span class='label'>verbose:</span> <span class='kw'>true</span>
+<span class='rparen'>)</span>
+
+<span class='kw'>if</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_success'>success</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>You started successfully a new Docker Swarm cluster.</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>This will perform the same install like above but will print all messages of the Docker install script on your console.</p>
+
+<h3>Printing stdout and stderr outputs</h3>
+
+<p>It is possible to print all standard output and error messages of
+sequentially executed commands by calling <code>stdout()</code>, <code>stderr()</code> or <code>console()</code>
+with the return of a <code>capture4()</code> call.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># This will print all standard output messages of all executed commands.
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_stdout'>stdout</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+
+<span class='comment'># This will print all standard error messages of all executed commands.
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_stderr'>stderr</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span>
+
+<span class='comment'># This will print all console output messages of all executed commands 
+</span><span class='comment'># (which includes standard out and standard err messages).
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='const'>Open4ssh</span><span class='period'>.</span><span class='id identifier rubyid_console'>console</span><span class='lparen'>(</span><span class='id identifier rubyid_returns'>returns</span><span class='rparen'>)</span> 
+</code></pre>
+
+<h2>Development</h2>
+
+<p>To install this gem onto your local machine, run <code>bundle exec rake install</code>. 
+To release a new version, update the version number in <code>version.rb</code>, 
+and then run <code>bundle exec rake release</code>, 
+which will create a git tag for the version, 
+push git commits and tags, and push the <code>.gem</code> file to <a href="https://rubygems.org">rubygems.org</a>.</p>
+
+<h2>Contributing</h2>
+
+<p>All kind of </p>
+
+<ul>
+<li>bug reports,</li>
+<li>feature requests, </li>
+<li>and pull requests </li>
+</ul>
+
+<p>are welcome on Github at <a href="https://github.com/nkratzke/open4ssh">https://github.com/nkratzke/open4ssh</a>.</p>
+
+<h2>License</h2>
+
+<p>The gem is available as open source under the terms of the <a href="http://opensource.org/licenses/MIT">MIT License</a>.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Sun Jul  3 13:11:26 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.1).
+</div>
+
+  </body>
+</html>

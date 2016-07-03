@@ -2,8 +2,9 @@
 
 ## Version 0.1.3
 
+- Added unit tests.
 - Added <code>capture3()</code> function.
-- Optimized documentation. 
+- Optimized documentation.
 
 ## Version 0.1.2
 

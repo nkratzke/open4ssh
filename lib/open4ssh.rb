@@ -51,15 +51,14 @@ module Open4ssh
     stdout = ""
     keys = [key]
 
-    Net::SSH.start(host, user, port: 22, password: pwd, keys: keys) do |ssh|
-      result = ssh.exec!(cmd)
-      stdout = result
+    Net::SSH.start(host, user, port: port, password: pwd, keys: keys) do |ssh|
+      stdout = ssh.exec!(cmd)
     end
 
     return stdout
   end
 
-  # Executes one shell commands on a remote host via SSH and captures it exit code, stdout and stderr.
+  # Executes one shell command on a remote host via SSH and captures it exit code, stdout and stderr.
   #
   # @param host [String] DNS name or IP address of the remote host (required)
   # @param port [Integer] Port (defaults to 22)
@@ -80,7 +79,7 @@ module Open4ssh
   #   )
   #
   def self.capture3(host: '', user: '', port: 22, key: '', pwd: '', cmd: '', verbose: false)
-    returns = self.capture4(host: host, user: user, port: port, key: key, cmd: [cmd], verbose: verbose)
+    returns = self.capture4(host: host, user: user, port: port, key: key, pwd: pwd, cmd: [cmd], verbose: verbose)
     exit_code = returns.last[0]
     std_out = returns.last[1]
     std_err = returns.last[2]

@@ -13,7 +13,7 @@ require 'test/unit'
 #
 # @author Nane Kratzke
 #
-class TestHelper
+class TestHelper < Test::Unit::TestCase
 
   # SSH test user
   SSH_USER     = 'nane'

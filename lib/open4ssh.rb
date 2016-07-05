@@ -265,7 +265,7 @@ module Open4ssh
   #   puts Open4ssh.console(ecodes) # Print collected console messages of all executed commands
   #
   def self.console(results)
-    results.map { |result| "#{result[1]}\n#{result[2]}" }
+    results.map { |result| "#{result[1]}#{result[2]}" }
            .select { |console| not console.strip.empty? } * ''
   end
 end

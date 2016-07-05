@@ -6,7 +6,7 @@ require 'open3'
 #
 # @author Nane Kratzke
 #
-class TestConsole
+class TestConsole < TestHelper
 
   # Tests the {Open4ssh.console} function and its interplay with {Open4ssh.stderr} and {Open4ssh.stdout}.
   #

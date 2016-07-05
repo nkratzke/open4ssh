@@ -19,7 +19,7 @@ class TestConsole < TestHelper
 
     assert_equal(3, returns.count)
     assert(Open4ssh.success(returns))
-    assert_equal("echo 'hello world\nanother test\nsuper test\n'", Open4ssh.console(returns))
+    assert_equal("hello world\nanother test\nsuper test\n", Open4ssh.console(returns))
     assert(Open4ssh.stderr(returns).empty?)
     assert(Open4ssh.console(returns).include?(Open4ssh.stderr(returns)))
     assert(Open4ssh.console(returns).include?(Open4ssh.stdout(returns)))
@@ -36,7 +36,7 @@ class TestConsole < TestHelper
 
     assert_equal(3, returns.count)
     assert(Open4ssh.success(returns))
-    assert_equal("echo 'hello world\nanother test\nsuper test\n'", Open4ssh.stdout(returns))
+    assert_equal("hello world\nanother test\nsuper test\n", Open4ssh.stdout(returns))
     assert(Open4ssh.stderr(returns).empty?)
     assert(Open4ssh.console(returns).include?(Open4ssh.stderr(returns)))
     assert(Open4ssh.console(returns).include?(Open4ssh.stdout(returns)))
@@ -53,7 +53,7 @@ class TestConsole < TestHelper
 
     assert_equal(2, returns.count)
     assert(!Open4ssh.success(returns))
-    assert_equal("echo 'hello world\n'", Open4ssh.stdout(returns))
+    assert_equal("hello world\n", Open4ssh.stdout(returns))
     assert(!Open4ssh.stderr(returns).empty?)
     assert(Open4ssh.console(returns).include?(Open4ssh.stderr(returns)))
     assert(Open4ssh.console(returns).include?(Open4ssh.stdout(returns)))

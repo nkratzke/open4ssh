@@ -33,16 +33,16 @@ class TestHelper < Test::Unit::TestCase
   #
   # We are using the following {https://github.com/mketo/docker/tree/master/ssh docker repository}.
   #
-  def setup
-    `docker run -d -p #{SSH_PORT}:22 -e SSH_PASSWORD=#{SSH_PASSWORD} -e SSH_USERNAME=#{SSH_USER} --name #{CONTAINER} keto/ssh`
-    sleep 2 # Give the container some seconds to come up
-  end
+  # def setup
+  #  `docker run -d -p #{SSH_PORT}:22 -e SSH_PASSWORD=#{SSH_PASSWORD} -e SSH_USERNAME=#{SSH_USER} --name #{CONTAINER} keto/ssh`
+  #  sleep 2 # Give the container some seconds to come up
+  # end
 
   # Shuts down ssh test container.
   #
-  def teardown
-    `docker stop #{CONTAINER}`
-    `docker rm #{CONTAINER}`
-  end
+  # def teardown
+  #  `docker stop #{CONTAINER}`
+  #  `docker rm #{CONTAINER}`
+  # end
 
 end

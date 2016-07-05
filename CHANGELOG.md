@@ -1,6 +1,11 @@
 # Changelog
 
-## Upcoming Version 0.1.4
+## Upcoming Version 0.1.5
+
+- Improved unit test coverage.
+- Preparing Version 0.2.0 release.
+
+## Version 0.1.4
 
 - Added code coverage
 

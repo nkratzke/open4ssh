@@ -37,6 +37,7 @@ module Open4ssh
   # @param cmd [String] valid shell command string to be executed on host (required)
   #
   # @return [String] console output of executed command (output includes stdout and stderr)
+  # @raise [One of Net::SSH::Exceptions] In case of net::ssh errors due to connection problems, authentication errors, timeouts, ....
   #
   # @example
   #   stdout = Open4ssh.capture(
@@ -69,6 +70,7 @@ module Open4ssh
   # @param verbose [Bool] console outputs are plotted to stdout/stderr if set (defaults to false)
   #
   # @return [exit_code, std_out, std_err] exit_code, stdout, stderr of executed command
+  # @raise [One of Net::SSH::Exceptions] In case of net::ssh errors due to connection problems, authentication errors, timeouts, ....
   #
   # @example
   #   exit_code, std_err, std_out = Open4ssh.capture3(
@@ -98,6 +100,7 @@ module Open4ssh
   # @param verbose [Bool] console outputs are plotted to stdout/stderr if set (defaults to false)
   #
   # @return [Array<exit_code, std_out, std_err, command>] List of exit_code, stdout, stderr and executed commands
+  # @raise [One of Net::SSH::Exceptions] In case of net::ssh errors due to connection problems, authentication errors, timeouts, ....
   #
   # @example
   #   exit_code, stderr, stdout, command = Open4ssh.capture4(
@@ -179,8 +182,7 @@ module Open4ssh
   #   end
   #
   def self.success(results)
-    results.select { |result| result[0] != 0 }
-        .empty?
+    results.select { |result| result[0] != 0 }.empty?
   end
 
   # Collects all stdout messages of a list of executed shell commands.
@@ -209,7 +211,7 @@ module Open4ssh
   #
   def self.stdout(results)
     output = results.map { |result| result[1] }
-                 .select {  |stdout| not stdout.strip.empty? } * "\n"
+                    .select {  |stdout| not stdout.strip.empty? } * "\n"
     output.strip
   end
 
@@ -239,7 +241,7 @@ module Open4ssh
   #
   def self.stderr(results)
     output = results.map { |result| result[2] }
-                 .select { |stderr| not stderr.strip.empty? } * "\n"
+                    .select { |stderr| not stderr.strip.empty? } * "\n"
     output.strip
   end
 
@@ -266,7 +268,7 @@ module Open4ssh
   #
   def self.console(results)
     output = results.map { |result| "#{result[1]}\n#{result[2]}" }
-                 .select { |console| not console.strip.empty? } * "\n"
+                    .select { |console| not console.strip.empty? } * "\n"
     output.strip
   end
 

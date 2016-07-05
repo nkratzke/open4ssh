@@ -1,53 +1,21 @@
-require 'simplecov'
-SimpleCov.start
-
-require 'test/unit'
+require 'test_helper'
 require 'open4ssh'
 require 'open3'
 
 # Tests the capture commands.
+#
 # @author Nane Kratzke
 #
-class TestCapture < Test::Unit::TestCase
+class TestCapture < TestHelper
 
-  # SSH test user
-  SSH_USER     = 'nane'
-
-  # SSH test password
-  SSH_PASSWORD = 'secret'
-
-  # SSH port for testing
-  SSH_PORT     = 2222
-
-  # SSH container name
-  CONTAINER    = 'ssh'
-
-  # Starts ssh test container via {http://www.docker.io Docker}.
-  # Installs a user with name 'nane' and password 'secret'.
-  # SSH server operates on port 2222.
-  #
-  # We are using the following {https://github.com/mketo/docker/tree/master/ssh docker repository}.
-  #
-  def setup
-    `docker run -d -p #{SSH_PORT}:22 -e SSH_PASSWORD=#{SSH_PASSWORD} -e SSH_USERNAME=#{SSH_USER} --name #{CONTAINER} keto/ssh`
-    sleep 2 # Give the container some seconds to come up
-  end
-
-  # Shuts down ssh test container.
-  #
-  def teardown
-    `docker stop #{CONTAINER}`
-    `docker rm #{CONTAINER}`
-  end
-
-  # Tests the capture method.
+  # Tests the {Open4ssh.capture} method.
   #
   def test_capture
     out = Open4ssh.capture(host: 'localhost', port: SSH_PORT, user: SSH_USER, pwd: SSH_PASSWORD, cmd: "echo 'hello world'")
     assert_equal("hello world\n", out)
   end
 
-  # Tests the capture 3 method in case of a successful command.
+  # Tests the {Open4ssh.capture3} method in case of a successful command.
   #
   def test_capture3_success
     exit_code, std_out, std_err = Open4ssh.capture3(host: 'localhost', port: SSH_PORT, user: SSH_USER, pwd: SSH_PASSWORD, cmd: "echo 'hello world'")
@@ -57,7 +25,7 @@ class TestCapture < Test::Unit::TestCase
     assert(std_err.empty?)
   end
 
-  # Tests the capture3 method in case of a failing command.
+  # Tests the {Open4ssh.capture3} method in case of a failing command.
   #
   def test_capture3_fail
     exit_code, std_out, std_err = Open4ssh.capture3(host: 'localhost', port: SSH_PORT, user: SSH_USER, pwd: SSH_PASSWORD, cmd: "this shall fail")
@@ -67,7 +35,7 @@ class TestCapture < Test::Unit::TestCase
     assert(!std_err.empty?)
   end
 
-  # Tests the capture4 method in case of a succesful commands.
+  # Tests the {Open4ssh.capture4} method in case of a succesful commands.
   #
   def test_capture4_success
     returns = Open4ssh.capture4(host: 'localhost', port: SSH_PORT, user: SSH_USER, pwd: SSH_PASSWORD, cmd: [
@@ -86,7 +54,7 @@ class TestCapture < Test::Unit::TestCase
     assert("echo 'super test'", returns.last[3])
   end
 
-  # Tests the capture4 method in case of one failing command.
+  # Tests the {Open4ssh.capture4} method in case of one failing command.
   #
   def test_capture4_fail
     returns = Open4ssh.capture4(host: 'localhost', port: SSH_PORT, user: SSH_USER, pwd: SSH_PASSWORD, cmd: [

@@ -2,4 +2,10 @@ language: ruby
 rvm:
   - 2.2.0
   - 2.3.0
-before_install: gem install bundler -v 1.10.6
+sudo: required
+services:
+  - docker
+before_install:
+  - gem install bundler -v 1.10.6
+  - docker pull keto/ssh
+  - docker run -d -p 2222:22 -e SSH_PASSWORD=secret -e SSH_USERNAME=nane keto/ssh

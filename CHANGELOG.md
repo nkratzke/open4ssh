@@ -1,9 +1,9 @@
 # Changelog
 
-## Upcoming Version 0.1.5
+## Version 0.2.0
 
 - Improved unit test coverage.
-- Preparing Version 0.2.0 release.
+- Basic continuous integration using Travis CI.
 
 ## Version 0.1.4
 

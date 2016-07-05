@@ -16,8 +16,8 @@ sequence of commands and returns their exit codes, standard out and standard err
 Open4ssh is most useful in remote automation scenarios which are triggered from Ruby environments.
 
 - [RubyGems](https://rubygems.org/gems/open4ssh)
-- [CHANGELOG](file.CHANGELOG.html)
-- [LICENSE](file.LICENSE.html)
+- Master: [![Build Status](https://travis-ci.org/nkratzke/open4ssh.svg?branch=master)](https://travis-ci.org/nkratzke/open4ssh)
+- Develop: [![Build Status](https://travis-ci.org/nkratzke/open4ssh.svg?branch=develop)](https://travis-ci.org/nkratzke/open4ssh)
 
 ## Installation
 

@@ -210,8 +210,8 @@ module Open4ssh
   #   end
   #
   def self.stdout(results)
-    results.map { |result| result[1].strip }
-           .select { |stdout| not stdout.empty? } * "\n"
+    results.map { |result| result[1] }
+           .select { |stdout| not stdout.strip.empty? } * ''
   end
 
   # Collects all stderr messages of a list of executed shell commands.
@@ -239,8 +239,8 @@ module Open4ssh
   #   end
   #
   def self.stderr(results)
-    results.map { |result| result[2].strip }
-           .select { |stderr| not stderr.empty? } * "\n"
+    results.map { |result| result[2] }
+           .select { |stderr| not stderr.strip.empty? } * ''
   end
 
   # Collects all console messages (stdout + stderr) of a list of executed shell commands.
@@ -265,7 +265,7 @@ module Open4ssh
   #   puts Open4ssh.console(ecodes) # Print collected console messages of all executed commands
   #
   def self.console(results)
-    results.map { |result| "#{result[1]}\n#{result[2]}".strip }
-           .select { |console| not console.empty? } * "\n"
+    results.map { |result| "#{result[1]}\n#{result[2]}" }
+           .select { |console| not console.strip.empty? } * ''
   end
 end

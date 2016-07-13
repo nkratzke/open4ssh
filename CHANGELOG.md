@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.1
+
+- Turned off paranoid ssh key verification.
+
 ## Version 0.2.0
 
 - Improved unit test coverage.

@@ -81,7 +81,7 @@ module Open4ssh
   #   )
   #
   def self.capture3(host: '', user: '', port: 22, key: '', pwd: '', cmd: '', verbose: false)
-    returns = self.capture4(host: host, user: user, port: port, key: key, pwd: pwd, cmd: [cmd], verbose: verbose, paranoid: false)
+    returns = self.capture4(host: host, user: user, port: port, key: key, pwd: pwd, cmd: [cmd], verbose: verbose)
     exit_code = returns.last[0]
     std_out = returns.last[1]
     std_err = returns.last[2]

@@ -52,7 +52,7 @@ module Open4ssh
     stdout = ""
     keys = [key]
 
-    Net::SSH.start(host, user, port: port, password: pwd, keys: keys) do |ssh|
+    Net::SSH.start(host, user, port: port, password: pwd, keys: keys, paranoid: false) do |ssh|
       stdout = ssh.exec!(cmd)
     end
 
@@ -119,7 +119,7 @@ module Open4ssh
     keys    = [key]
     results = []
 
-    Net::SSH.start(host, user, port: port, password: pwd, keys: keys) do |ssh|
+    Net::SSH.start(host, user, port: port, password: pwd, keys: keys, paranoid: false) do |ssh|
       # Execute command by command
       for command in cmd
         stdout   = ""

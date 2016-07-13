@@ -52,7 +52,7 @@ module Open4ssh
     stdout = ""
     keys = [key]
 
-    Net::SSH.start(host, user, port: port, password: pwd, keys: keys) do |ssh|
+    Net::SSH.start(host, user, port: port, password: pwd, keys: keys, paranoid: false) do |ssh|
       stdout = ssh.exec!(cmd)
     end
 
@@ -81,7 +81,7 @@ module Open4ssh
   #   )
   #
   def self.capture3(host: '', user: '', port: 22, key: '', pwd: '', cmd: '', verbose: false)
-    returns = self.capture4(host: host, user: user, port: port, key: key, pwd: pwd, cmd: [cmd], verbose: verbose)
+    returns = self.capture4(host: host, user: user, port: port, key: key, pwd: pwd, cmd: [cmd], verbose: verbose, paranoid: false)
     exit_code = returns.last[0]
     std_out = returns.last[1]
     std_err = returns.last[2]
@@ -119,7 +119,7 @@ module Open4ssh
     keys    = [key]
     results = []
 
-    Net::SSH.start(host, user, port: port, password: pwd, keys: keys) do |ssh|
+    Net::SSH.start(host, user, port: port, password: pwd, keys: keys, paranoid: false) do |ssh|
       # Execute command by command
       for command in cmd
         stdout   = ""
